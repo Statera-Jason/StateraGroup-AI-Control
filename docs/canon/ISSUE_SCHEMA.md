@@ -145,22 +145,25 @@ Projects SHOULD define these custom fields:
    - Values: Team names from repository org
    - Default: Repository default team
 
-### Metadata Validation Rules
+### Metadata Validation Rules (Phase C+ Enforcement; Phase B Manual)
+
+**Phase B Note**: Validation rules below are governance policy. Teams MUST perform checks manually. No automated enforcement exists in Phase B.
 
 #### Creation Validation
 
-At issue creation, validation MUST check:
+**Phase B**: Manually verify at issue creation:
 
 1. Title is non-empty and ≤ 150 characters
 2. Body matches template structure or contains minimum sections
 3. At least one `type:` label is present
 4. Issue is added to at least one project
 
-If validation fails, issue SHOULD be labeled `status:needs-info` and assigned back to creator.
+**Phase B**: If incomplete, manually label `status:needs-info` and assign back to creator.
+**Phase C+**: MAY implement automated validation at creation time.
 
 #### Ready State Validation
 
-Before moving to "Ready" state, validation MUST check:
+**Phase B**: Before moving to "Ready" state, manually check:
 
 1. Has exactly one `type:` label
 2. Has exactly one `priority:` label
@@ -168,18 +171,20 @@ Before moving to "Ready" state, validation MUST check:
 4. Has project status field set
 5. No `status:blocked` or `status:needs-info` labels present
 
-If validation fails, transition to "Ready" MUST be rejected with specific error.
+**Phase B**: If checks fail, do not move to "Ready"; request updates from author.
+**Phase C+**: MAY implement automated state transition blocking.
 
 #### Completion Validation
 
-Before moving to "Done" state, validation MUST check:
+**Phase B**: Before moving to "Done" state, manually verify:
 
 1. All acceptance criteria checkboxes are marked complete
 2. At least one PR references this issue (see ISSUE_TO_PR_TRACEABILITY.md)
 3. No unresolved blocking comments
 4. Issue is not labeled `status:blocked`
 
-If validation fails, transition to "Done" MUST be rejected.
+**Phase B**: If checks fail, do not mark "Done"; leave in "In Review" until resolved.
+**Phase C+**: MAY implement automated blocking of "Done" transition.
 
 ### Template Structure
 
@@ -235,35 +240,55 @@ Templates MUST use GitHub's issue form schema (YAML), not legacy markdown templa
 
 ## Failure Modes
 
+**Phase B Note**: Failure modes below describe governance posture. Phase B relies on manual review. Phase C+ MAY implement automated enforcement.
+
 ### Missing Required Labels
 
 **Scenario**: Issue moved to "Ready" state without `priority:` label.
 
-**Failure Mode**: Project automation MUST revert issue to "Backlog" state and add comment identifying missing label. No silent default SHALL be applied.
+**Failure Mode** (Governance):
+- Phase B: Project owner MUST manually revert to "Backlog" and comment identifying missing label
+- Phase C+: Validation MAY auto-revert and comment
+
+No silent default SHALL be applied (governance principle).
 
 ### Malformed Acceptance Criteria
 
 **Scenario**: Acceptance criteria section exists but contains no checkboxes.
 
-**Failure Mode**: Validation SHOULD warn but not block issue creation. Transition to "Ready" MUST be blocked until checkboxes exist.
+**Failure Mode** (Governance):
+- Phase B: Manual check during issue refinement; issue stays in "Backlog" until fixed
+- Phase C+: Validation MAY warn at creation; MAY block "Ready" transition
 
 ### Label Conflicts
 
 **Scenario**: Issue has multiple conflicting `type:` labels (e.g., both `type:feature` and `type:bug`).
 
-**Failure Mode**: Validation MUST block state transitions and require manual resolution. No automatic label removal SHALL occur.
+**Failure Mode** (Governance):
+- Phase B: Manual detection during review; assignee MUST resolve conflict before state transition
+- Phase C+: Validation MAY block state transitions
+
+No automatic label removal SHALL occur (governance principle).
 
 ### Template Bypass
 
 **Scenario**: Issue created without using template (e.g., via API or email).
 
-**Failure Mode**: Issue SHOULD be labeled `status:needs-info` automatically. Bot SHOULD comment with link to proper template. Manual review REQUIRED before "Ready" state.
+**Failure Mode** (Governance):
+- Phase B: Manually label `status:needs-info` and comment with template link
+- Phase C+: Bot MAY auto-label and comment
+
+Manual review REQUIRED before "Ready" state (governance principle).
 
 ### Schema Migration
 
 **Scenario**: Schema updated with new required field; existing issues lack this field.
 
-**Failure Mode**: Existing issues MUST be grandfathered under old schema version. Only new issues MUST comply with new schema. Bulk backfill SHALL NOT be automatic.
+**Failure Mode** (Governance):
+- Phase B: Manual grandfathering; existing issues exempt from new requirements
+- Phase C+: Same governance; no automatic backfill
+
+Bulk backfill SHALL NOT be automatic (governance principle).
 
 ## Out-of-Scope Items
 

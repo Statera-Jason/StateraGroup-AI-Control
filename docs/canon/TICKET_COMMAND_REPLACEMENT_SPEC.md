@@ -247,17 +247,20 @@ Fixes #123
 3. Push additional commits to PR branch
 4. Re-request review when ready
 
-#### Automated Checks
+#### CI/CD Checks (If Configured)
 
-CI/CD runs automatically (existing behavior):
+**Note**: CI/CD is outside Phase B scope. If repository has existing CI:
 - Tests
 - Linting
 - Type checking
 - Build validation
 
+These run per existing repository configuration, not Phase B requirements.
+
 #### Issue Status
 
-Issue automatically moves to "In Review" when PR created (if Project automation configured).
+**Phase B**: Manually update issue status in Project board to "In Review"
+**If configured**: User-created Project automation MAY auto-update (not Phase B requirement)
 
 ### Phase 7: Merge
 
@@ -271,36 +274,38 @@ gh pr merge --squash --auto
 # Click "Squash and merge" button
 ```
 
-#### Automatic Issue Closure
+#### Issue Closure (GitHub Native)
 
 When PR with `Fixes #123` is merged:
-- Issue automatically closes
-- Issue status moves to "Done" (if Project automation configured)
-- Issue timeline shows merge event
+- **GitHub Native**: Issue automatically closes (built-in GitHub behavior)
+- **Phase B**: Manually update Project status to "Done"
+- **If configured**: User-created Project automation MAY auto-update status
+- Issue timeline shows merge event (GitHub native)
 
-#### Validation Before Merge
+#### Pre-Merge Checks (Manual in Phase B)
 
-Pre-merge checks SHOULD verify:
+**Phase B**: Reviewer MUST manually verify during PR review:
 - All acceptance criteria checked off
 - No `status:blocked` label
 - At least one approval
-- CI passing
+- CI passing (if repository has CI configured)
 
 ### Phase 8: Verification
 
 #### Post-Merge Check
 
-1. Confirm issue automatically closed
+**Phase B**: Manual verification steps:
+1. Confirm GitHub closed the issue (native `Fixes` keyword behavior)
 2. Verify all acceptance criteria were met
-3. Deploy to staging/production
+3. Deploy to staging/production (per repository process)
 4. Add final comment confirming deployment
 
-#### If Auto-Close Failed
+#### If GitHub Auto-Close Failed
 
-If issue didn't close automatically:
-1. Check PR body has proper `Fixes #123` syntax
+If issue didn't close despite `Fixes #123` syntax:
+1. Verify PR body has proper `Fixes #123` syntax
 2. Manually close issue with comment referencing PR
-3. File bug report for traceability system
+3. GitHub native auto-close may fail due to permissions or syntax errors
 
 ### Workflow Comparison Matrix
 
@@ -336,11 +341,17 @@ New repositories SHOULD:
 
 ## Failure Modes
 
+**Phase B Note**: Failure modes below describe governance posture. Phase B relies on manual review and correction.
+
 ### Forgot Issue Reference in PR
 
 **Scenario**: Developer creates PR but forgets `Fixes #123` in body.
 
-**Failure Mode**: Pre-merge validation blocks merge. Developer MUST edit PR body to add reference.
+**Failure Mode**:
+- Phase B: Reviewer MUST reject PR during code review
+- Phase C+: Validation MAY block merge
+
+Developer MUST edit PR body to add reference.
 
 **Prevention**: Use PR template with reminder comment.
 
@@ -350,15 +361,17 @@ New repositories SHOULD:
 
 **Failure Mode**: PR review identifies unclear requirements. Work may need significant revision.
 
-**Prevention**: Validate issue schema before branch creation (manual check or future CLI validation).
+**Prevention**:
+- Phase B: Manual validation before starting work
+- Phase C+: CLI MAY validate issue schema before branch creation
 
 ### Branch Name Doesn't Match Issue
 
 **Scenario**: Branch named `fix-bug` instead of `123-fix-bug`.
 
-**Failure Mode**: No automatic failure, but traceability harder for humans. PR body reference still required.
+**Failure Mode**: No failure; this is optional convention. PR body reference is what matters.
 
-**Prevention**: Enforce branch naming convention via documentation and review.
+**Prevention**: Document branch naming convention; mention in PR review if not followed.
 
 ### Multiple Issues, One PR
 
@@ -368,13 +381,15 @@ New repositories SHOULD:
 
 **Prevention**: Use multiple issue references in PR body (`Fixes #123, Fixes #124`).
 
-### Issue Auto-Close Didn't Trigger
+### GitHub Auto-Close Didn't Trigger
 
-**Scenario**: PR merged with `Fixes #123` but issue stayed open.
+**Scenario**: PR merged with `Fixes #123` but GitHub's native auto-close failed.
 
-**Failure Mode**: Post-merge audit detects orphan issue. Manual closure required.
+**Failure Mode**:
+- Phase B: Manual detection during issue review; manual closure required
+- Phase C+: Post-merge validation MAY detect and alert
 
-**Prevention**: Monitor post-merge webhooks; alert on auto-close failures.
+**Prevention**: Verify `Fixes` syntax during PR review; manually close if needed.
 
 ## Out-of-Scope Items
 

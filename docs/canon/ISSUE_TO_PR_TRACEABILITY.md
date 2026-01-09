@@ -109,46 +109,50 @@ This specification does NOT:
    <type>/<issue-number>-<description>
    ```
 
-### Automatic State Transitions
+### State Transitions (GitHub Native Behavior)
+
+**Phase B Note**: The behaviors below describe GitHub's native issue-closing functionality (e.g., `Fixes #123` auto-closes on merge). Phase B does NOT implement custom validation or blocking. Phase C+ MAY add enforcement; see failure modes for governance posture.
 
 #### On PR Creation
 
 1. When PR created with `Fixes #123` reference:
-   - Issue SHOULD automatically move to "In Review" state
-   - Issue timeline SHOULD show PR link
-   - Issue assignee MAY be auto-updated to PR author
+   - GitHub natively links PR to issue in timeline
+   - Project board automation (if configured by user) MAY update status
+   - Issue assignee updates are manual in Phase B
 
 2. If issue not in "In Progress" state:
-   - Validation SHOULD warn but not block PR creation
-   - Manual review REQUIRED before merge
+   - Phase B: Manual review during PR review
+   - Phase C+: Validation MAY warn (not blocking)
 
 #### On PR Merge
 
-1. When PR merged with closing keyword:
-   - Referenced issue MUST automatically move to "Done" state
-   - Issue closed_at timestamp set
+1. When PR merged with closing keyword (`Fixes`, `Closes`, `Resolves`):
+   - **GitHub Native**: Issue automatically closes (built-in GitHub behavior)
+   - Issue closed_at timestamp set by GitHub
    - Issue timeline shows merge event
 
 2. If issue has unchecked acceptance criteria:
-   - Auto-close SHOULD be blocked
-   - Manual completion and closure REQUIRED
+   - Phase B: Manual verification during PR review
+   - Phase C+: Validation MAY block auto-close
 
 3. If issue labeled `status:blocked`:
-   - Auto-close MUST be blocked
-   - Manual label removal REQUIRED before closure
+   - Phase B: Manual check; do not merge until label removed
+   - Phase C+: Validation MAY block merge
 
 #### On PR Close (without merge)
 
 1. When PR closed without merge:
-   - Issue SHOULD revert to "Ready" state
-   - Issue timeline shows PR closure
+   - Issue state changes are manual in Phase B
+   - Project automation (if user-configured) MAY revert status
    - No automatic label changes
 
-### Validation Rules
+### Validation Rules (Phase C+ Enforcement; Phase B Manual)
 
 #### Pre-Merge Validation
 
-Before PR merge, validation MUST check:
+**Phase B**: The checks below are governance policy. Teams MUST perform manually during PR review. No automated enforcement exists in Phase B.
+
+**Phase C+**: MAY implement automated validation. If implemented, validation SHOULD check:
 
 1. **Issue Reference Exists**: At least one valid issue reference in PR body
 2. **Issue Not Closed**: Referenced issues are not already closed (for closing keywords)
@@ -156,31 +160,35 @@ Before PR merge, validation MUST check:
 4. **Acceptance Criteria Met**: If using closing keyword, issue acceptance criteria all checked
 5. **No Conflicts**: Referenced issue not in conflict state
 
-If validation fails, merge MUST be blocked with specific error message.
+**Phase B Governance**: If any check fails, reviewer MUST reject PR. No automated merge blocking exists.
 
 #### Post-Merge Validation
 
-After PR merge, validation SHOULD verify:
+**Phase B**: Manual verification during retrospectives or issue review.
+
+**Phase C+**: Automated post-merge validation MAY verify:
 
 1. Issues with closing keywords successfully closed
 2. Issue state correctly updated to "Done"
 3. Issue timeline shows merge event
 4. No orphan PRs remain unlinked
 
-If post-merge validation fails, alert MUST be generated for manual review.
+**Phase B**: If issues found, manual correction required. No automated alerts in Phase B.
 
 #### Periodic Audit
 
-Weekly audit SHOULD check for:
+**Phase B**: Manual weekly/monthly audit by project owner. Check for:
 
 1. **Orphan PRs**: Merged PRs with no issue reference
-   - Action: Add `missing-issue` label, notify PR author
+   - Action: Manually add `missing-issue` label, notify PR author
 
 2. **Orphan Issues**: Issues in "Done" state with no merged PR
-   - Action: Add `needs-verification` label, request evidence
+   - Action: Manually add `needs-verification` label, request evidence
 
 3. **Stale In-Review**: Issues in "In Review" state with closed (unmerged) PR
-   - Action: Revert to "Ready" state
+   - Action: Manually revert to "Ready" state
+
+**Phase C+**: Audit MAY be automated.
 
 ### Exception Handling
 
@@ -211,35 +219,57 @@ Retroactive linking does NOT satisfy traceability requirement but provides audit
 
 ## Failure Modes
 
+**Phase B Note**: Failure modes below describe governance posture and fail-closed doctrine. Phase B relies on manual review. Phase C+ MAY implement automated enforcement.
+
 ### Missing Issue Reference
 
 **Scenario**: PR submitted without any issue reference in body.
 
-**Failure Mode**: Pre-merge validation MUST block merge. Bot SHOULD comment with instructions and link to this specification. Developer MUST update PR body before merge allowed.
+**Failure Mode** (Governance):
+- Phase B: Reviewer MUST reject PR during code review
+- Phase C+: Validation MAY block merge; bot MAY comment with instructions
+
+Developer MUST update PR body with issue reference.
 
 ### Invalid Issue Number
 
 **Scenario**: PR references `#999` but issue doesn't exist.
 
-**Failure Mode**: Pre-merge validation MUST block merge. Bot SHOULD comment identifying invalid reference. Developer MUST fix reference or create missing issue.
+**Failure Mode** (Governance):
+- Phase B: Reviewer MUST identify during code review and reject PR
+- Phase C+: Validation MAY block merge; bot MAY comment
+
+Developer MUST fix reference or create missing issue.
 
 ### Issue Already Closed
 
 **Scenario**: PR uses `Fixes #123` but issue already closed by previous PR.
 
-**Failure Mode**: Pre-merge validation MUST block merge. Bot SHOULD comment identifying conflict. Developer MUST update to `Related to #123` or explain in comments.
+**Failure Mode** (Governance):
+- Phase B: Reviewer MUST identify conflict and reject PR
+- Phase C+: Validation MAY block merge
 
-### Auto-Close Failure
+Developer MUST update to `Related to #123` or explain in comments.
 
-**Scenario**: PR merged with `Fixes #123` but GitHub fails to auto-close issue.
+### GitHub Auto-Close Failure
 
-**Failure Mode**: Post-merge validation SHOULD detect unclosed issue and attempt manual closure. If manual closure fails, alert MUST be sent to repository maintainers.
+**Scenario**: PR merged with `Fixes #123` but GitHub's native auto-close fails.
+
+**Failure Mode** (Governance):
+- Phase B: Manual detection during post-merge review; manual closure required
+- Phase C+: Post-merge validation MAY detect and alert
+
+Maintainer MUST manually close issue and investigate GitHub functionality.
 
 ### Acceptance Criteria Incomplete
 
 **Scenario**: PR with closing keyword merged but issue acceptance criteria not all checked.
 
-**Failure Mode**: Pre-merge validation SHOULD block merge. If bypassed, post-merge audit MUST flag issue for review. Issue MUST NOT be marked complete until criteria verified.
+**Failure Mode** (Governance):
+- Phase B: Reviewer MUST verify criteria during PR review; reject if incomplete
+- Phase C+: Validation MAY block merge
+
+Issue MUST NOT be marked complete until criteria verified.
 
 ### Multiple PRs, One Issue
 

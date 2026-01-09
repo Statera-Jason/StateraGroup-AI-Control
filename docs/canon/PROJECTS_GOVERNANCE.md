@@ -278,29 +278,33 @@ Views MUST follow naming convention:
 3. Default view MAY only be changed by owner
 4. View configuration SHOULD be documented in `.github/PROJECT_CONFIG.md`
 
-### Workflow Automation
+### Workflow Automation (User-Configured; Not Phase B Requirement)
 
-#### Allowed Automations
+**Phase B Note**: GitHub Projects provides native automation features that users MAY configure. Phase B does NOT require or implement custom automation. The guidance below describes governance for user-configured native GitHub features.
 
-Projects MAY configure these automations:
+#### Permitted Native Automations (User Optional)
 
-1. **Status: Issue Opened**
+Project owners MAY configure GitHub's native automation features:
+
+1. **Status: Issue Opened** (native GitHub Projects feature)
    - Trigger: Issue opened
    - Action: Add to project with Status = Backlog
 
-2. **Status: PR Opened**
+2. **Status: PR Opened** (native GitHub Projects feature)
    - Trigger: PR opened that closes issue
    - Action: Set issue Status = In Review
 
-3. **Status: PR Merged**
+3. **Status: PR Merged** (native GitHub Projects feature)
    - Trigger: PR merged that closes issue
    - Action: Set issue Status = Done, close issue
 
-4. **Auto-Archive**
+4. **Auto-Archive** (native GitHub Projects feature)
    - Trigger: Issue in Done state for 30 days
    - Action: Archive issue from project
 
-#### Prohibited Automations
+**Phase B**: These are optional. Manual status updates are the baseline.
+
+#### Prohibited Automations (Governance Policy)
 
 Projects MUST NOT configure automations that:
 
@@ -310,6 +314,8 @@ Projects MUST NOT configure automations that:
 4. Sync with external systems (Jira, Linear)
 5. Make assumptions about priority or size
 6. Close issues without human approval
+
+**Phase B**: No custom automation beyond GitHub's native features. Phase C+ MAY add enforcement.
 
 ### Change Management
 
