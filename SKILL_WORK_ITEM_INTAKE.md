@@ -1,4 +1,4 @@
-To ensure every work item is captured with clarity, properly scoped, and explicitly authorized before technical activity begins.
+# SKILL_WORK_ITEM_INTAKE
 
 ## Purpose
 To ensure every work item is captured with clarity, properly scoped, and explicitly authorized before technical activity begins.
@@ -34,3 +34,37 @@ To ensure every work item is captured with clarity, properly scoped, and explici
 8. Assign priority based on intake rubric (e.g., impact, urgency).
 9. Confirm agreement on definition of ready.
 10. STOP: Mark work item “INTAKE_APPROVED” only after all criteria are satisfied.
+
+## Output Artifacts
+- Intake record in backlog/ticket system.
+- Documented scope boundaries and decision-maker.
+- Acceptance criteria and rationale for prioritization.
+
+## Quality Gates (Manual)
+- Manager or designated triager reviews intake form completeness.
+- Stakeholder signs off on scope, goals, and decision-making authority.
+
+## Evidence Checklist
+- Link to intake record.
+- Names of requestor and approver.
+- Scope and acceptance criteria present in intake documentation.
+
+## Failure Modes
+- “Implementation before agreement”: Work begins without intake approval.
+- “Docs updated after the fact”: Documentation fabricated post hoc.
+- “Evidence referenced but not present”: Intake record links to non-existent scope.
+- “Implicit scope expansion”: No boundaries defined, team builds more than required.
+
+## Definition of Done
+- Work item is approved, scoped, and recorded with clear acceptance criteria.
+- No execution begins until approval is logged and traceable.
+
+## Escalation Conditions
+- Scope ambiguity or conflict with existing work.
+- Missing decision authority or unclear ownership.
+- Business impact not articulated.
+
+## Common Anti-Patterns This Skill Exists To Prevent
+- Starting implementation based on Slack threads.
+- Ambiguity around “who asked for this” or “what does success look like.”
+- Doing helpful but unauthorized work based on assumptions.
