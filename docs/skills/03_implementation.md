@@ -3,6 +3,11 @@
 ## Purpose
 To ensure that code, infrastructure, and configuration changes are executed in strict alignment with the approved design and documented requirements.
 
+## Authorized Roles
+- **Primary Executor**: Claude Implementer (docs/governance/roles/claude_implementer.md)
+- **May Contribute**: GPT_PAC (clarifications on scope/design), Claude Reviewer (early feedback)
+- **Must NOT Execute**: Governance Auditor (must remain independent)
+
 ## When This Skill MUST Be Used
 - After a technical design has been approved.
 - When building any logic, automation, or infrastructure that will be deployed to shared or production environments.

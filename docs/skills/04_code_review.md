@@ -3,6 +3,11 @@
 ## Purpose
 To verify that the implementation faithfully matches the approved design, adheres to standards, and includes sufficient tests and documentation before merge or deployment.
 
+## Authorized Roles
+- **Primary Executor**: Claude Reviewer (docs/governance/roles/claude_reviewer.md)
+- **May Contribute**: GPT_PAC (scope validation), Governance Auditor (scope audit post-review)
+- **Must NOT Execute**: Claude Implementer on own code (conflict of interest)
+
 ## When This Skill MUST Be Used
 - Before any code is merged to main, trunk, or production branches.
 - When reviewing contributions to shared infrastructure or services.

@@ -3,6 +3,11 @@
 ## Purpose
 To communicate externally visible changes, risks, and required actions associated with a release in a clear, accurate, and auditable way.
 
+## Authorized Roles
+- **Primary Executor**: GPT_PAC (docs/governance/roles/gpt_pac.md)
+- **May Contribute**: Claude Implementer (technical input on changes)
+- **Must NOT Execute**: Governance Auditor (must remain independent)
+
 ## When This Skill MUST Be Used
 - Before any release to production or external consumers.
 - When behavior, APIs, dependencies, or operational procedures change.

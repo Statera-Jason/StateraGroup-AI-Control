@@ -3,6 +3,11 @@
 ## Purpose
 To provide verifiable proof that implementation meets acceptance criteria and does not introduce regressions, using reproducible and auditable test results.
 
+## Authorized Roles
+- **Primary Executor**: Claude Implementer (docs/governance/roles/claude_implementer.md)
+- **May Contribute**: Claude Reviewer (verification of evidence completeness)
+- **Must NOT Execute**: Governance Auditor (must remain independent)
+
 ## When This Skill MUST Be Used
 - After implementation is complete and before merge or release.
 - When changes impact production systems, logic, workflows, or data paths.
@@ -40,7 +45,8 @@ To provide verifiable proof that implementation meets acceptance criteria and do
 - Any failed test must be addressed or explicitly deferred with approval.
 
 ## Evidence Checklist
-- Link to test report or CI pipeline output.
+- Link to manual test report, test logs, or explicitly authorized CI pipeline output (authorization must be documented in associated GitHub Issue per automation policy).
+- Evidence MUST be captured in GitHub (PR attachments, committed artifacts, or PR comments). CI/CD is not assumed and is not required.
 - Confirmation of environment, date/time, and data version.
 - Test-to-requirements trace matrix.
 

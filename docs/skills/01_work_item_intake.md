@@ -3,6 +3,11 @@
 ## Purpose
 To ensure every work item is captured with clarity, properly scoped, and explicitly authorized before technical activity begins.
 
+## Authorized Roles
+- **Primary Executor**: GPT_PAC (docs/governance/roles/gpt_pac.md)
+- **May Contribute**: Claude Implementer, Claude Reviewer (consultation only)
+- **Must NOT Execute**: Governance Auditor (must remain independent)
+
 ## When This Skill MUST Be Used
 - Before any engineering, design, or investigation begins.
 - When a request is made by a stakeholder or external team.
@@ -28,7 +33,7 @@ To ensure every work item is captured with clarity, properly scoped, and explici
 2. Confirm that the request includes business context and goals.
 3. Require scoping information (inclusions, exclusions, constraints).
 4. Identify stakeholders and confirm decision authority.
-5. Record the request in the intake system (e.g., ticketing, backlog).
+5. Record the request as a GitHub Issue (canonical system of record per governance policy).
 6. Validate acceptance criteria are testable and documented.
 7. STOP: Reject intake if acceptance criteria or decision authority is missing.
 8. Assign priority based on intake rubric (e.g., impact, urgency).
@@ -36,7 +41,7 @@ To ensure every work item is captured with clarity, properly scoped, and explici
 10. STOP: Mark work item "INTAKE_APPROVED" only after all criteria are satisfied.
 
 ## Output Artifacts
-- Intake record in backlog/ticket system.
+- GitHub Issue with documented scope boundaries and decision-maker.
 - Documented scope boundaries and decision-maker.
 - Acceptance criteria and rationale for prioritization.
 
