@@ -3,6 +3,11 @@
 ## Purpose
 To translate scoped requirements into an auditable, testable, and peer-reviewed technical approach before implementation begins.
 
+## Authorized Roles
+- **Primary Executor**: GPT_PAC (docs/governance/roles/gpt_pac.md)
+- **May Contribute**: Claude Implementer (technical input), Claude Reviewer (design review)
+- **Must NOT Execute**: Governance Auditor (must remain independent)
+
 ## When This Skill MUST Be Used
 - After work item intake has been approved.
 - Before writing production code, infrastructure, or schema changes.
@@ -30,10 +35,10 @@ To translate scoped requirements into an auditable, testable, and peer-reviewed 
 5. Circulate the design for peer review and stakeholder feedback.
 6. Revise based on comments and record all key decision points.
 7. STOP: Do not proceed until design is explicitly approved.
-8. Log design version and approval in the source of truth (e.g., PRD, confluence, repo).
+8. Log design version and approval in GitHub (committed to docs/ directory, attached to Issue, or recorded in PR description).
 
 ## Output Artifacts
-- Versioned technical design document.
+- Versioned technical design document in GitHub repository or attached to GitHub Issue.
 - Record of reviewers, feedback, and approvals.
 - Link from intake record to final approved design.
 

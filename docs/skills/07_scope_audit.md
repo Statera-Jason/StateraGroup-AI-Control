@@ -3,6 +3,11 @@
 ## Purpose
 To verify that delivered work strictly matches approved scope and that no unauthorized expansion or omission occurred.
 
+## Authorized Roles
+- **Primary Executor**: Governance Auditor (docs/governance/roles/governance_auditor.md)
+- **May Contribute**: None (must remain independent)
+- **Must NOT Execute**: GPT_PAC, Claude Implementer, Claude Reviewer (conflict of interest)
+
 ## When This Skill MUST Be Used
 - Before closing a work item.
 - Before declaring a milestone complete.

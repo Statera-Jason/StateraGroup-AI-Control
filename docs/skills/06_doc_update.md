@@ -3,6 +3,11 @@
 ## Purpose
 To ensure that user-facing and system-facing documentation reflects the true state, behavior, and usage of the system as implemented.
 
+## Authorized Roles
+- **Primary Executor**: Claude Implementer (docs/governance/roles/claude_implementer.md)
+- **May Contribute**: GPT_PAC (scope/requirements clarification), Claude Reviewer (doc review)
+- **Must NOT Execute**: Governance Auditor (must remain independent)
+
 ## When This Skill MUST Be Used
 - After implementation changes behavior, APIs, workflows, or dependencies.
 - Before release to users or handoff to downstream teams.
